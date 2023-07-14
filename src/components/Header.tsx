@@ -4,9 +4,18 @@ import { HiMenuAlt1 } from "react-icons/hi";
 import { RxCross1 } from "react-icons/rx";
 import { FiHeart, FiSearch, FiUser } from "react-icons/fi";
 import logo from "../assets/logo.png";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { signOutState } from "../redux/features/auth/authSlice";
 
 export default function Header() {
   const [openSearch, setOpenSearch] = useState(false);
+  const dispatch = useAppDispatch();
+  const { token } = useAppSelector((state) => state.auth);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    dispatch(signOutState());
+  };
 
   return (
     <header className={``}>
@@ -100,23 +109,20 @@ export default function Header() {
                   <p className="text-[13px] hidden md:block">Account</p>
                   <div className="user_button absolute  z-50 top-[56px] w-[120px] py-[5px] px-[10px] rounded-md ">
                     <ul className="text-center">
-                      <>
-                        <Link to="signin">
-                          <li className="hover:border-b py-2">Sign In</li>
+                      {!token ? (
+                        <>
+                          <Link to="signin">
+                            <li className="hover:border-b py-2">Sign In</li>
+                          </Link>
+                          <Link to="signup">
+                            <li className="hover:border-b py-2">Sign Up</li>
+                          </Link>
+                        </>
+                      ) : (
+                        <Link to="" onClick={handleSignOut}>
+                          <li className="hover:border-b py-2">Sign Out</li>
                         </Link>
-                        <Link to="signup">
-                          <li className="hover:border-b py-2">Sign Up</li>
-                        </Link>
-                      </>
-
-                      {/* <>
-                      <Link to="profile">
-                        <li className="hover:border-b py-2">My Profile</li>
-                      </Link>
-                      <Link to="">
-                        <li className="hover:border-b py-2">Sign Out</li>
-                      </Link>
-                    </> */}
+                      )}
                     </ul>
                   </div>
                 </div>
