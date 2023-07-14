@@ -70,7 +70,7 @@ export default function Header() {
               </div>
               {/* Logo */}
               <div className="md:w-[20%] ">
-                <div className="logo flex justify-center">
+                <div className="logo">
                   <Link to="/" className="text-white text-2xl">
                     <img
                       className="md:w-[180px] w-[150px]"
