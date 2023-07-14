@@ -2,7 +2,7 @@ import Head from "../components/Head";
 import BreadCrumb from "../components/BreadCrumb";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSignUpMutation } from "../redux/features/auth/authApi";
 import Loading from "../components/Loading";
 import { toast } from "react-toastify";
@@ -12,6 +12,7 @@ import { IError } from "../types/globalTypes";
 export default function SignUp() {
   const [signUp, { isSuccess, data, isError, error, isLoading, reset }] =
     useSignUpMutation();
+  const navigate = useNavigate();
 
   // form handle
   let formSchema = Yup.object().shape({
@@ -51,6 +52,7 @@ export default function SignUp() {
     if (isSuccess) {
       toast(`${data?.message}`);
       reset();
+      navigate("/signin");
     } else if (isError) {
       toast.error((error as IError)?.data.message);
       reset();
