@@ -3,18 +3,29 @@ import BreadCrumb from "../components/BreadCrumb";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
+import { useSignUpMutation } from "../redux/features/auth/authApi";
+import Loading from "../components/Loading";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { IError } from "../types/globalTypes";
 
 export default function SignUp() {
+  const [signUp, { isSuccess, data, isError, error, isLoading, reset }] =
+    useSignUpMutation();
+
+  // form handle
   let formSchema = Yup.object().shape({
     firstname: Yup.string().required("First name is required"),
     lastname: Yup.string().required("Last name is required"),
     email: Yup.string()
       .email("Email should be valid")
       .required("Email is required"),
-    phone: Yup.string().required("Phone number is required"),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null!], "Passwords must match")
+      .required("Confirm password is required"),
   });
 
   const formik = useFormik({
@@ -22,15 +33,34 @@ export default function SignUp() {
       firstname: "",
       lastname: "",
       email: "",
-      phone: "",
       password: "",
+      confirmPassword: "",
     },
 
     validationSchema: formSchema,
     onSubmit: (values, { resetForm }) => {
-      console.log(values);
+      const { firstname, lastname, email, password } = values;
+      const data = { firstname, lastname, email, password };
+      signUp(data);
+      resetForm();
     },
   });
+
+  // notification
+  useEffect(() => {
+    if (isSuccess) {
+      toast(`${data?.message}`);
+      reset();
+    } else if (isError) {
+      toast.error((error as IError)?.data.message);
+      reset();
+    }
+  }, [data, error, isError, isSuccess, reset]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <>
       <Head title="Sign Up ||" />
@@ -85,20 +115,6 @@ export default function SignUp() {
             ) : null}
             <input
               className="w-full p-2 mb-3"
-              type="phone"
-              placeholder="Phone number"
-              name="phone"
-              id="phone"
-              onChange={formik.handleChange("phone")}
-              value={formik.values.phone}
-            />
-            {formik.touched.phone && formik.errors.phone ? (
-              <div className="formik_err text-sm text-red-600">
-                {formik.errors.phone}
-              </div>
-            ) : null}
-            <input
-              className="w-full p-2 mb-3"
               type="password"
               placeholder="Password"
               name="password"
@@ -109,6 +125,20 @@ export default function SignUp() {
             {formik.touched.password && formik.errors.password ? (
               <div className="formik_err text-sm text-red-600">
                 {formik.errors.password}
+              </div>
+            ) : null}
+            <input
+              className="w-full p-2 mb-3"
+              type="password"
+              placeholder="Confirm Password"
+              name="confirmPassword"
+              id="confirmPassword"
+              onChange={formik.handleChange("confirmPassword")}
+              value={formik.values.confirmPassword}
+            />
+            {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+              <div className="formik_err text-sm text-red-600">
+                {formik.errors.confirmPassword}
               </div>
             ) : null}
             <Link to="/signin">
