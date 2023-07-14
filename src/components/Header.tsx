@@ -104,7 +104,7 @@ export default function Header() {
                         <Link to="signin">
                           <li className="hover:border-b py-2">Sign In</li>
                         </Link>
-                        <Link to="singup">
+                        <Link to="signup">
                           <li className="hover:border-b py-2">Sign Up</li>
                         </Link>
                       </>

@@ -61,6 +61,18 @@ textarea {
   background-color: var(--color_f5f5f7);
 }
 
+input::placeholder,
+select,
+textarea::placeholder {
+  font-size: 14px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .layout {
   max-width: 1600px !important;
   margin: 0 auto !important;
@@ -68,6 +80,32 @@ textarea {
 
 .box_shadow {
   box-shadow: 0 0 10px #0000001a;
+}
+
+.body_wrapper {
+  background-color: var(--color_f5f5f7);
+}
+
+.first_button {
+  background-color: var(--color_232f3e) !important;
+  color: #fff !important;
+  font-size: 15px !important;
+}
+
+.first_button:hover {
+  background-color: var(--color_febd69) !important;
+  color: var(--color_232f3e) !important;
+}
+
+.second_button {
+  background-color: var(--color_febd69) !important;
+  color: var(--color_232f3e) !important;
+  font-size: 15px !important;
+}
+
+.second_button:hover {
+  background-color: var(--color_232f3e) !important;
+  color: #fff !important;
 }
 
 /* Header */
@@ -214,3 +252,5 @@ textarea {
 .accordion__button[aria-selected="true"]::after {
   transform: rotate(45deg);
 }
+
+/* SignUp */
