@@ -9,7 +9,7 @@ export default function Head({ title }: IProps) {
     <HelmetProvider>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{title} Squeak Cart</title>
+        <title>{title} Pathshala</title>
       </Helmet>
     </HelmetProvider>
   );

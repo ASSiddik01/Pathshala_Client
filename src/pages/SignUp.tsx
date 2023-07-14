@@ -111,7 +111,7 @@ export default function SignUp() {
                 {formik.errors.password}
               </div>
             ) : null}
-            <Link to="/login">
+            <Link to="/signin">
               <p className="text-sm font-bold">Already have an account?</p>
             </Link>
             <div className="flex justify-center gap-[30px] mt-[20px]">
