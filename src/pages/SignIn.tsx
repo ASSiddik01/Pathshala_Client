@@ -8,11 +8,14 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { IError } from "../types/globalTypes";
 import Loading from "../components/Loading";
+import { useAppDispatch } from "../redux/hooks";
+import { signInState } from "../redux/features/auth/authSlice";
 
 export default function SignIn() {
   const [signIn, { isSuccess, data, isError, error, isLoading, reset }] =
     useSignInMutation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   // form handle
   let formSchema = Yup.object().shape({
@@ -36,11 +39,21 @@ export default function SignIn() {
     },
   });
 
+  // token set in local storage
+  const accessToken = data?.data?.accessToken;
+  if (accessToken) {
+    localStorage.setItem("token", JSON.stringify(accessToken));
+  }
+
   // notification
   useEffect(() => {
     if (isSuccess) {
       toast(`${data?.message}`);
       reset();
+      // set token into state for header request
+      if (accessToken) {
+        dispatch(signInState({ accessToken }));
+      }
       navigate("/");
     } else if (isError) {
       toast.error((error as IError)?.data.message);
