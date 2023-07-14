@@ -7,7 +7,7 @@ export default function Home() {
     <>
       <Head title="" />
       <div className="layout">
-        {/* <Banner /> */}
+        <Banner />
         <Books />
       </div>
     </>

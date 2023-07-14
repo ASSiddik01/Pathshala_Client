@@ -1,9 +1,9 @@
-import banner from "../assets/banner.jpg";
+import banner from "../assets/banner.png";
 
 export default function Banner() {
   return (
     <>
-      <img src={banner} alt="" />
+      <img className="object-contain" src={banner} alt="" />
     </>
   );
 }
