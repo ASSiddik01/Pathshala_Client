@@ -1,10 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BreadCrumb from "../components/BreadCrumb";
 import Head from "../components/Head";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useSignInMutation } from "../redux/features/auth/authApi";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { IError } from "../types/globalTypes";
+import Loading from "../components/Loading";
 
 export default function SignIn() {
+  const [signIn, { isSuccess, data, isError, error, isLoading, reset }] =
+    useSignInMutation();
+  const navigate = useNavigate();
+
+  // form handle
   let formSchema = Yup.object().shape({
     email: Yup.string()
       .email("Email should be valid")
@@ -21,10 +31,26 @@ export default function SignIn() {
     validationSchema: formSchema,
 
     onSubmit: (values, { resetForm }) => {
-      console.log(values);
-      //   resetForm();
+      signIn(values);
+      resetForm();
     },
   });
+
+  // notification
+  useEffect(() => {
+    if (isSuccess) {
+      toast(`${data?.message}`);
+      reset();
+      navigate("/");
+    } else if (isError) {
+      toast.error((error as IError)?.data.message);
+      reset();
+    }
+  }, [data, error, isError, isSuccess, reset]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
