@@ -97,6 +97,9 @@ export default function Header() {
                       <div className="flex flex-wrap md:justify-start justify-center items-center gap-[15px]">
                         <NavLink to="/">Home</NavLink>
                         <NavLink to="/books">All Books</NavLink>
+                        {token && (
+                          <NavLink to="/add-new-book">Add New Book </NavLink>
+                        )}
                       </div>
                     </div>
                   </div>

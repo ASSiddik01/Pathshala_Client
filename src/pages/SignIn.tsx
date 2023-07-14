@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import BreadCrumb from "../components/BreadCrumb";
 import Head from "../components/Head";
 import { useFormik } from "formik";
@@ -16,6 +16,8 @@ export default function SignIn() {
     useSignInMutation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { state } = useLocation();
+  const path = state?.path || "/";
 
   // form handle
   let formSchema = Yup.object().shape({
@@ -54,7 +56,7 @@ export default function SignIn() {
       if (accessToken) {
         dispatch(signInState({ accessToken }));
       }
-      navigate("/");
+      navigate(path, { replace: true });
     } else if (isError) {
       toast.error((error as IError)?.data.message);
       reset();
