@@ -2,8 +2,17 @@ import BreadCrumb from "../components/BreadCrumb";
 import Head from "../components/Head";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { useAddBookMutation } from "../redux/features/book/bookApi";
+import Loading from "../components/Loading";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { IError } from "../types/globalTypes";
 
 export default function AddBook() {
+  const [addBook, { isSuccess, data, isError, error, isLoading, reset }] =
+    useAddBookMutation();
+
+  // form handle
   let formSchema = Yup.object().shape({
     title: Yup.string().required("Book title is required"),
     author: Yup.string().required("Auther name is required"),
@@ -24,10 +33,26 @@ export default function AddBook() {
     validationSchema: formSchema,
 
     onSubmit: (values, { resetForm }) => {
-      console.log(values);
-      //   resetForm();
+      addBook(values);
+      resetForm();
     },
   });
+
+  // notification
+  useEffect(() => {
+    if (isSuccess) {
+      toast(`${data?.message}`);
+      reset();
+    } else if (isError) {
+      toast.error((error as IError)?.data.message);
+      reset();
+    }
+  }, [data, error, isError, isSuccess, reset]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <>
       <Head title="Add Book ||" />
