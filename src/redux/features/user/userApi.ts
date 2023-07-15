@@ -14,7 +14,19 @@ const bookApi = api.injectEndpoints({
       }),
       invalidatesTags: ["wishlist"],
     }),
+    removeWishlist: builder.mutation({
+      query: ({ data }) => ({
+        url: `/user/remove-wishlist`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["wishlist"],
+    }),
   }),
 });
 
-export const { useAddWishlistMutation, useGetUserQuery } = bookApi;
+export const {
+  useAddWishlistMutation,
+  useGetUserQuery,
+  useRemoveWishlistMutation,
+} = bookApi;
