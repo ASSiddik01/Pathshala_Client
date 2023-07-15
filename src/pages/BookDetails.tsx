@@ -3,6 +3,7 @@ import Head from "../components/Head";
 import {
   useDeleteBookMutation,
   useGetBookQuery,
+  useReviewBookMutation,
   useUpdateBookMutation,
 } from "../redux/features/book/bookApi";
 import Loading from "../components/Loading";
@@ -11,11 +12,13 @@ import { IError } from "../types/globalTypes";
 import { useEffect } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { useAppSelector } from "../redux/hooks";
 
 export default function BookDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data, isLoading } = useGetBookQuery(id);
+  const { token } = useAppSelector((state) => state.auth);
   const [
     deleteBook,
     {
@@ -36,8 +39,19 @@ export default function BookDetails() {
       reset: updateReset,
     },
   ] = useUpdateBookMutation();
+  const [
+    reviewBook,
+    {
+      isSuccess: reviewSuccess,
+      data: reviewData,
+      isError: reviewIsError,
+      error: reviewError,
+      reset: reviewReset,
+    },
+  ] = useReviewBookMutation();
 
   const book = data?.data;
+  const reviews = data?.data?.reviews;
 
   const handleDelete = (id: string | undefined) => {
     deleteBook(id);
@@ -47,6 +61,7 @@ export default function BookDetails() {
     updateBook({ id });
   };
 
+  // review submit
   let formSchema = Yup.object().shape({
     review: Yup.string().required("Review is required"),
   });
@@ -59,12 +74,17 @@ export default function BookDetails() {
     validationSchema: formSchema,
 
     onSubmit: (values, { resetForm }) => {
-      console.log(values);
-      resetForm();
+      if (token) {
+        reviewBook({ id, data: values });
+        resetForm();
+      } else {
+        toast.error(`Please login first`);
+      }
     },
   });
 
   useEffect(() => {
+    // for delete
     if (deleteSuccess) {
       toast(`${deleteData?.message}`);
       reset();
@@ -73,12 +93,21 @@ export default function BookDetails() {
       toast.error((deleteError as IError)?.data.message);
       reset();
     }
+    // for update
     if (updateIsError) {
       toast.error((updateError as IError)?.data.message);
       updateReset();
     } else if (updateSuccess) {
       updateReset();
       navigate(`/edit-book/${id}`, { replace: true });
+    }
+    // for review
+    if (reviewSuccess) {
+      toast(`${reviewData?.message}`);
+      reset();
+    } else if (reviewIsError) {
+      toast.error((reviewError as IError)?.data.message);
+      reviewReset();
     }
   }, [
     deleteSuccess,
@@ -89,6 +118,12 @@ export default function BookDetails() {
     updateIsError,
     updateError,
     updateSuccess,
+    updateReset,
+    reviewSuccess,
+    reviewData,
+    reviewIsError,
+    reviewError,
+    reviewReset,
   ]);
 
   if (isLoading) {
@@ -180,6 +215,44 @@ export default function BookDetails() {
                       </button>
                     </form>
                   </div>
+                </div>
+
+                {/* User review */}
+                <div className="p-4">
+                  <hr />
+                  <h3 className="font-bold text-xl my-2">
+                    User Reviews ({reviews.length})
+                  </h3>
+                  {reviews?.map(
+                    (review: {
+                      _id: string;
+                      review: string;
+                      reviewerId: {
+                        firstname: string;
+                        lastname: string;
+                      };
+                    }) => (
+                      <div
+                        key={review._id}
+                        className="flex gap-5 mb-4 border-b"
+                      >
+                        <div className="user_photo w-1/12">
+                          <img
+                            className="rounded-full"
+                            src="https://i.ibb.co/MgsTCcv/avater.jpg"
+                            alt=""
+                          />
+                        </div>
+                        <div className="review_info w-11/12 border-l-2 px-2">
+                          <h4 className="text-lg font-bold">{review.review}</h4>
+                          <p className="italic text-gray-500">
+                            - by {review.reviewerId.firstname}{" "}
+                            {review.reviewerId.lastname}{" "}
+                          </p>
+                        </div>
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
             </div>
