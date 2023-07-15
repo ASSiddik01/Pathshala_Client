@@ -14,11 +14,11 @@ export default function AddBook() {
   const formik = useFormik({
     initialValues: {
       title: "",
+      desc: "",
       author: "",
       genre: "",
       publishedDate: "",
-      bookUrl:
-        "https://smartmobilestudio.com/wp-content/uploads/2012/06/leather-book-preview.png",
+      bookImgUrl: "",
     },
 
     validationSchema: formSchema,
@@ -111,16 +111,29 @@ export default function AddBook() {
                   </div>
                 </div>
                 <div className="w-full mb-3">
-                  <label htmlFor="bookUrl">Book Image URL</label>
+                  <label htmlFor="bookImgUrl">Book Image URL</label>
                   <input
                     className="w-full p-2 mb-3 mt-1"
                     type="text"
                     placeholder="Type Book Image URL"
-                    name="bookUrl"
-                    id="bookUrl"
-                    onChange={formik.handleChange("bookUrl")}
-                    value={formik.values.bookUrl}
+                    name="bookImgUrl"
+                    id="bookImgUrl"
+                    onChange={formik.handleChange("bookImgUrl")}
+                    value={formik.values.bookImgUrl}
                   />
+                </div>
+                <div className="w-full mb-3">
+                  <label htmlFor="desc">About Book</label>
+                  <textarea
+                    className="w-full p-2 mb-3 mt-1"
+                    name="desc"
+                    id="desc"
+                    cols={30}
+                    placeholder="Type About Book"
+                    rows={5}
+                    onChange={formik.handleChange("desc")}
+                    value={formik.values.desc}
+                  ></textarea>
                 </div>
                 <button
                   type="submit"
