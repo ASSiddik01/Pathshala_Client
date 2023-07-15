@@ -42,6 +42,10 @@ const routes = createBrowserRouter([
         path: "/books/:id",
         element: <BookDetails />,
       },
+      {
+        path: "/edit-book/:id",
+        element: <AddBook />,
+      },
     ],
   },
   {

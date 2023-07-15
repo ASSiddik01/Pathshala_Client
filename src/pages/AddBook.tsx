@@ -2,15 +2,57 @@ import BreadCrumb from "../components/BreadCrumb";
 import Head from "../components/Head";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { useAddBookMutation } from "../redux/features/book/bookApi";
+import {
+  useAddBookMutation,
+  useGetBookQuery,
+  useUpdateBookMutation,
+} from "../redux/features/book/bookApi";
 import Loading from "../components/Loading";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { IError } from "../types/globalTypes";
+import { useParams } from "react-router-dom";
 
 export default function AddBook() {
+  const { id } = useParams();
+  let bookData:
+    | {
+        data: {
+          author: string;
+          bookImgUrl: string;
+          createdAt: string;
+          desc: string;
+          genre: string;
+          id: string;
+          publishedDate: string;
+          title: string;
+          updatedAt: string;
+          userId: string;
+          __v: number;
+          _id: string;
+        };
+      }
+    | undefined = undefined;
+
+  let bookLoading: boolean | undefined = undefined;
+  if (id) {
+    const { data: getBookData, isLoading: bookLoadingState } =
+      useGetBookQuery(id);
+    bookData = getBookData;
+    bookLoading = bookLoadingState;
+  }
   const [addBook, { isSuccess, data, isError, error, isLoading, reset }] =
     useAddBookMutation();
+  const [
+    updateBook,
+    {
+      isSuccess: updateSuccess,
+      data: updateData,
+      isError: updateIsError,
+      error: updateError,
+      reset: updateReset,
+    },
+  ] = useUpdateBookMutation();
 
   // form handle
   let formSchema = Yup.object().shape({
@@ -33,13 +75,18 @@ export default function AddBook() {
     validationSchema: formSchema,
 
     onSubmit: (values, { resetForm }) => {
-      addBook(values);
-      resetForm();
+      if (id) {
+        updateBook({ id, data: values });
+      } else {
+        addBook(values);
+        resetForm();
+      }
     },
   });
 
   // notification
   useEffect(() => {
+    // for add
     if (isSuccess) {
       toast(`${data?.message}`);
       reset();
@@ -47,17 +94,49 @@ export default function AddBook() {
       toast.error((error as IError)?.data.message);
       reset();
     }
-  }, [data, error, isError, isSuccess, reset]);
+    // for update
+    if (bookData) {
+      const { title, author, genre, publishedDate, desc, bookImgUrl } =
+        bookData?.data;
+      formik.setValues({
+        title,
+        author,
+        genre,
+        publishedDate,
+        bookImgUrl,
+        desc,
+      });
+    }
+    if (updateSuccess) {
+      toast(`${updateData?.message}`);
+      updateReset();
+    } else if (updateIsError) {
+      toast.error((updateError as IError)?.data.message);
+      updateReset();
+    }
+  }, [
+    data,
+    error,
+    isError,
+    isSuccess,
+    reset,
+    bookData,
+    updateSuccess,
+    updateData,
+    updateIsError,
+    updateError,
+    updateReset,
+  ]);
 
-  if (isLoading) {
+  if (isLoading || bookLoading) {
     return <Loading />;
   }
 
   return (
     <>
-      <Head title="Add Book ||" />
+      <Head title={id ? "Edit Book ||" : "Add Book ||"} />
       <div className="">
-        <BreadCrumb title="Add New Book" />
+        <BreadCrumb title={id ? "Edit Book" : "Add New Book"} />
         <div className="body_wrapper ">
           <div className="layout lg:w-[1000px] p-5">
             <div className="box_shadow bg-white p-5 rounded-lg">
@@ -160,12 +239,21 @@ export default function AddBook() {
                     value={formik.values.desc}
                   ></textarea>
                 </div>
-                <button
-                  type="submit"
-                  className="second_button duration-300 rounded-full py-[8px] px-[20px] font-medium "
-                >
-                  Add New
-                </button>
+                {id ? (
+                  <button
+                    type="submit"
+                    className="second_button duration-300 rounded-full py-[8px] px-[20px] font-medium "
+                  >
+                    Update book
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="second_button duration-300 rounded-full py-[8px] px-[20px] font-medium "
+                  >
+                    Add New
+                  </button>
+                )}
               </form>
             </div>
           </div>

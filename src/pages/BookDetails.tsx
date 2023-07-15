@@ -3,6 +3,7 @@ import Head from "../components/Head";
 import {
   useDeleteBookMutation,
   useGetBookQuery,
+  useUpdateBookMutation,
 } from "../redux/features/book/bookApi";
 import Loading from "../components/Loading";
 import { toast } from "react-toastify";
@@ -23,10 +24,25 @@ export default function BookDetails() {
       reset,
     },
   ] = useDeleteBookMutation();
+
+  const [
+    updateBook,
+    {
+      isSuccess: updateSuccess,
+      isError: updateIsError,
+      error: updateError,
+      reset: updateReset,
+    },
+  ] = useUpdateBookMutation();
+
   const book = data?.data;
 
   const handleDelete = (id: string | undefined) => {
     deleteBook(id);
+  };
+
+  const handleUpdate = (id: string | undefined) => {
+    updateBook({ id });
   };
 
   useEffect(() => {
@@ -38,7 +54,23 @@ export default function BookDetails() {
       toast.error((deleteError as IError)?.data.message);
       reset();
     }
-  }, [deleteSuccess, deleteData, deleteIsError, deleteError, reset]);
+    if (updateIsError) {
+      toast.error((updateError as IError)?.data.message);
+      updateReset();
+    } else if (updateSuccess) {
+      updateReset();
+      navigate(`/edit-book/${id}`, { replace: true });
+    }
+  }, [
+    deleteSuccess,
+    deleteData,
+    deleteIsError,
+    deleteError,
+    reset,
+    updateIsError,
+    updateError,
+    updateSuccess,
+  ]);
 
   if (isLoading) {
     return <Loading />;
@@ -81,11 +113,14 @@ export default function BookDetails() {
                   </ul>
                   <div className="card-actions">
                     <div className="flex justify-center gap-[20px] mt-[20px]">
-                      <button className="first_button duration-300 rounded-full py-[8px] px-[20px] font-medium ">
+                      <button
+                        onClick={() => handleUpdate(id)}
+                        className="first_button duration-300 rounded-full py-[8px] px-[20px] font-medium "
+                      >
                         Edit
                       </button>
                       <label
-                        htmlFor="addressModal"
+                        htmlFor="deleteModal"
                         className="second_button duration-300 rounded-full py-[8px] px-[20px] font-medium"
                       >
                         Delete
@@ -100,7 +135,7 @@ export default function BookDetails() {
       </div>
       {/* modal */}
       <div>
-        <input type="checkbox" id="addressModal" className="modal-toggle" />
+        <input type="checkbox" id="deleteModal" className="modal-toggle" />
         <div className="modal">
           <div className="modal-box w-6/12">
             <section className="text-gray-600 body-font overflow-hidden">
@@ -116,13 +151,13 @@ export default function BookDetails() {
                 </div>
                 <div className="flex justify-center gap-[20px] mt-[20px]">
                   <label
-                    htmlFor="addressModal"
+                    htmlFor="deleteModal"
                     className="first_button duration-300 rounded-full py-[8px] px-[20px] font-medium"
                   >
                     Cancel
                   </label>
                   <label
-                    htmlFor="addressModal"
+                    htmlFor="deleteModal"
                     onClick={() => handleDelete(id)}
                     className="second_button duration-300 rounded-full py-[8px] px-[20px] font-medium "
                   >
