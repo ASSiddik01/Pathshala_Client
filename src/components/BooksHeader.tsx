@@ -1,4 +1,7 @@
+import { useAppSelector } from "../redux/hooks";
+
 export default function BooksHeader() {
+  const { meta } = useAppSelector((state) => state.book);
   return (
     <div className="store_header flex justify-between items-center bg-white p-2 rounded-xl box_shadow">
       <div className="flex items-center gap-[15px]">
@@ -15,7 +18,7 @@ export default function BooksHeader() {
         </select>
       </div>
       <div className="">
-        <h4 className="store_header_text text-xs ">22 Books</h4>
+        <h4 className="store_header_text text-xs ">{meta?.total} Books</h4>
       </div>
     </div>
   );

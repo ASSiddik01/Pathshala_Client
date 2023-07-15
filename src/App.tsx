@@ -21,7 +21,7 @@ function App() {
 
   // set token into state for header request
   if (token) {
-    dispatch(signInState({ accessToken: token }));
+    dispatch(signInState({ accessToken: parsedToken }));
   }
 
   return <RouterProvider router={routes} />;

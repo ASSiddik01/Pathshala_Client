@@ -4,10 +4,28 @@ import BooksSidebar from "../sections/BooksSidebar";
 import BooksHeader from "../components/BooksHeader";
 import BooksFooter from "../components/BooksFooter";
 import BookList from "../sections/BookList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useGetBooksQuery } from "../redux/features/book/bookApi";
+import Loading from "../components/Loading";
+import { useAppDispatch } from "../redux/hooks";
+import { booksState } from "../redux/features/book/bookSlice";
 
 export default function AllBooks() {
   const [filter, setfilter] = useState(false);
+  const { isSuccess, data, isLoading } = useGetBooksQuery(undefined);
+  const books = data?.data?.data;
+  const meta = data?.data?.meta;
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(booksState({ books, meta }));
+    }
+  }, [isSuccess]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <>
       <Head title="Books ||" />
