@@ -13,6 +13,6 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["newBook"],
+  tagTypes: ["book", "wishlist"],
   endpoints: () => ({}),
 });

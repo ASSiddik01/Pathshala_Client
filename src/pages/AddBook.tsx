@@ -242,14 +242,14 @@ export default function AddBook() {
                 {id ? (
                   <button
                     type="submit"
-                    className="second_button duration-300 rounded-full py-[8px] px-[20px] font-medium "
+                    className="second_button duration-300 rounded-full py-[8px] px-[12px] font-medium "
                   >
                     Update book
                   </button>
                 ) : (
                   <button
                     type="submit"
-                    className="second_button duration-300 rounded-full py-[8px] px-[20px] font-medium "
+                    className="second_button duration-300 rounded-full py-[8px] px-[12px] font-medium "
                   >
                     Add New
                   </button>

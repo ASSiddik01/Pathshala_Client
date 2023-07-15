@@ -149,7 +149,7 @@ export default function SignUp() {
             <div className="flex justify-center gap-[30px] mt-[20px]">
               <button
                 type="submit"
-                className="first_button duration-300 rounded-full py-[8px] px-[20px] font-medium "
+                className="first_button duration-300 rounded-full py-[8px] px-[12px] font-medium "
               >
                 Create Account
               </button>

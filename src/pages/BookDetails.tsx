@@ -104,7 +104,7 @@ export default function BookDetails() {
     // for review
     if (reviewSuccess) {
       toast(`${reviewData?.message}`);
-      reset();
+      reviewReset();
     } else if (reviewIsError) {
       toast.error((reviewError as IError)?.data.message);
       reviewReset();
@@ -167,16 +167,16 @@ export default function BookDetails() {
                       </li>
                     </ul>
                     <div className="card-actions">
-                      <div className="flex justify-center gap-[20px] mt-[20px]">
+                      <div className="flex justify-center gap-[15px] mt-[20px]">
                         <button
                           onClick={() => handleUpdate(id)}
-                          className="first_button duration-300 rounded-full py-[8px] px-[20px] font-medium "
+                          className="first_button duration-300 rounded-full py-[8px] px-[12px] font-medium "
                         >
                           Edit
                         </button>
                         <label
                           htmlFor="deleteModal"
-                          className="second_button duration-300 rounded-full py-[8px] px-[20px] font-medium"
+                          className="second_button duration-300 rounded-full py-[8px] px-[12px] font-medium"
                         >
                           Delete
                         </label>
@@ -209,7 +209,7 @@ export default function BookDetails() {
                       ) : null}
                       <button
                         type="submit"
-                        className="second_button duration-300 rounded-full py-[8px] px-[20px] font-medium "
+                        className="second_button duration-300 rounded-full py-[8px] px-[12px] font-medium "
                       >
                         Submit
                       </button>
@@ -275,17 +275,17 @@ export default function BookDetails() {
                     book
                   </h3>
                 </div>
-                <div className="flex justify-center gap-[20px] mt-[20px]">
+                <div className="flex justify-center gap-[15px] mt-[20px]">
                   <label
                     htmlFor="deleteModal"
-                    className="first_button duration-300 rounded-full py-[8px] px-[20px] font-medium"
+                    className="first_button duration-300 rounded-full py-[8px] px-[12px] font-medium"
                   >
                     Cancel
                   </label>
                   <label
                     htmlFor="deleteModal"
                     onClick={() => handleDelete(id)}
-                    className="second_button duration-300 rounded-full py-[8px] px-[20px] font-medium "
+                    className="second_button duration-300 rounded-full py-[8px] px-[12px] font-medium "
                   >
                     Confirm
                   </label>
