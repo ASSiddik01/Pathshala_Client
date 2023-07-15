@@ -2,10 +2,10 @@ import { api } from "../../api/apiSlice";
 
 const bookApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    // getBook: builder.query({
-    //   query: (id) => `/user/${id}`,
-    //   providesTags: ["wishlist"],
-    // }),
+    getUser: builder.query({
+      query: () => `/user/profile`,
+      providesTags: ["wishlist"],
+    }),
     addWishlist: builder.mutation({
       query: ({ data }) => ({
         url: `/user/add-wishlist`,
@@ -17,4 +17,4 @@ const bookApi = api.injectEndpoints({
   }),
 });
 
-export const { useAddWishlistMutation } = bookApi;
+export const { useAddWishlistMutation, useGetUserQuery } = bookApi;

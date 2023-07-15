@@ -45,7 +45,7 @@ export default function BookList() {
                     </li>
                     <li className="info">
                       <span className="font-bold">Author: </span>
-                      {book?.genre} {book?.author}
+                      {book?.author}
                     </li>
                     <li className="info">
                       <span className="font-bold">Published At: </span>
