@@ -25,8 +25,8 @@ export default function BookList() {
     <section className="">
       <div className="container md:py-[30px] pb-[30px]  mx-auto">
         <div className="flex flex-wrap -m-4">
-          {books?.map((book, i) => (
-            <div key={i} className="p-4 w-full md:w-1/2">
+          {books?.map((book) => (
+            <div key={book._id} className="p-4 w-full md:w-1/2">
               <div className="card md:min-h-[300px] md:items-center lg:card-side bg-base-100 box_shadow p-2">
                 <figure className="md:w-[40%]">
                   <img

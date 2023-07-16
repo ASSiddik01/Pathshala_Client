@@ -7,17 +7,26 @@ import logo from "../assets/logo.png";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { signOutState } from "../redux/features/auth/authSlice";
 import { useGetUserQuery } from "../redux/features/user/userApi";
+import Loading from "./Loading";
 
 export default function Header() {
   const [openSearch, setOpenSearch] = useState(false);
   const dispatch = useAppDispatch();
-  const { data, isLoading } = useGetUserQuery(undefined);
   const { token } = useAppSelector((state) => state.auth);
+  const { data, isLoading } = useGetUserQuery(undefined);
+  let userData: { data: { wishlist: [{}] | undefined } } | undefined =
+    undefined;
+  let bookLoading: boolean | undefined = undefined;
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
     dispatch(signOutState());
   };
+
+  if (token) {
+    userData = data;
+    bookLoading = isLoading;
+  }
 
   return (
     <header className={``}>
@@ -143,7 +152,7 @@ export default function Header() {
                     <FiHeart size="20" />
                     <p className="text-[13px] hidden md:block">Wishlist</p>
                     <div className="bg-[#38b5fe] badge badge-sm absolute text-[12px] top-[-10px] right-[-10px] md:right-0">
-                      {data?.data?.wishlist.length | 0}
+                      {userData?.data?.wishlist?.length ?? 0}
                     </div>
                   </div>
                 </Link>

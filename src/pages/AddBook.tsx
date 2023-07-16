@@ -20,16 +20,10 @@ export default function AddBook() {
         data: {
           author: string;
           bookImgUrl: string;
-          createdAt: string;
           desc: string;
           genre: string;
-          id: string;
           publishedDate: string;
           title: string;
-          updatedAt: string;
-          userId: string;
-          __v: number;
-          _id: string;
         };
       }
     | undefined = undefined;
