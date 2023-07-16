@@ -9,7 +9,7 @@ const store = configureStore({
     auth: authReducer,
     book: bookReducer,
   },
-  devTools: true,
+  // devTools: false,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),
 });

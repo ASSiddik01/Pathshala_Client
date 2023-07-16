@@ -19,11 +19,15 @@ interface IBook {
     limit: number | null;
     total: number | null;
   } | null;
+  search: {
+    searchTerm: string | null;
+  } | null;
 }
 
 const initialState: IBook = {
   books: null,
   meta: null,
+  search: null,
 };
 
 const bookSlice = createSlice({
@@ -34,9 +38,12 @@ const bookSlice = createSlice({
       state.books = action.payload.books;
       state.meta = action.payload.meta;
     },
+    searchState: (state, action) => {
+      state.search = action.payload;
+    },
   },
 });
 
-export const { booksState } = bookSlice.actions;
+export const { booksState, searchState } = bookSlice.actions;
 
 export default bookSlice.reducer;

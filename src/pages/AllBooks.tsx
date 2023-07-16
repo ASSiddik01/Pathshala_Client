@@ -9,19 +9,24 @@ import { useGetBooksQuery } from "../redux/features/book/bookApi";
 import Loading from "../components/Loading";
 import { useAppDispatch } from "../redux/hooks";
 import { booksState } from "../redux/features/book/bookSlice";
+import { useAppSelector } from "../redux/hooks";
 
 export default function AllBooks() {
   const [filter, setfilter] = useState(false);
-  const { isSuccess, data, isLoading } = useGetBooksQuery(undefined);
+  const { search } = useAppSelector((state) => state.book);
+  // const { isSuccess, data, isLoading } = useGetBooksQuery(undefined);
+  const searchLogic = search ? `searchTerm=${search?.searchTerm}` : undefined;
+  const { data, isLoading, isSuccess } = useGetBooksQuery(searchLogic);
   const books = data?.data?.data;
   const meta = data?.data?.meta;
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (isSuccess) {
       dispatch(booksState({ books, meta }));
     }
-  }, [isSuccess]);
+  }, [books]);
 
   if (isLoading) {
     return <Loading />;
