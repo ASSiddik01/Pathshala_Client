@@ -1,11 +1,29 @@
+import { useEffect } from "react";
 import BreadCrumb from "../components/BreadCrumb";
 import Head from "../components/Head";
-import { useGetUserQuery } from "../redux/features/user/userApi";
+import {
+  useGetUserQuery,
+  useMarkFinishedMutation,
+} from "../redux/features/user/userApi";
+import { toast } from "react-toastify";
+import { IError } from "../types/globalTypes";
 
 export default function ReadList() {
   const { data } = useGetUserQuery(undefined);
   const books = data?.data?.readlist;
-  console.log(data);
+  const [markFinished, { isSuccess, data: markData, isError, error, reset }] =
+    useMarkFinishedMutation();
+  console.log(books);
+  console.log(isSuccess, isError, markData, error);
+  useEffect(() => {
+    if (isSuccess) {
+      toast(`${markData?.message}`);
+      reset();
+    } else if (isError) {
+      toast.error((error as IError)?.data.message);
+      reset();
+    }
+  }, [markData, error, isError, isSuccess, reset]);
   return (
     <>
       <Head title="Read Book List ||" />
@@ -20,6 +38,7 @@ export default function ReadList() {
                 (book: {
                   _id: string | undefined;
                   bookId: {
+                    _id: string | undefined;
                     bookImgUrl: string | undefined;
                     title: string | undefined;
                   };
@@ -45,14 +64,23 @@ export default function ReadList() {
                       </p>
                     </div>
                     <div className="status flex items-center justify-start">
-                      <button
-                        // onClick={() =>
-                        //   removeWishlist({ data: { bookId: book._id } })
-                        // }
-                        className="second_button duration-300 rounded-full py-[8px] px-[12px] font-medium "
-                      >
-                        Mark as Finished
-                      </button>
+                      {book.status !== "Finished" ? (
+                        <button
+                          onClick={() =>
+                            markFinished({
+                              data: {
+                                bookId: book?.bookId?._id,
+                                status: "Finished",
+                              },
+                            })
+                          }
+                          className="second_button duration-300 rounded-full py-[8px] px-[12px] font-medium "
+                        >
+                          Mark as Finished
+                        </button>
+                      ) : (
+                        <h2 className="text-green-700">Read Finished</h2>
+                      )}
                     </div>
                   </div>
                 )

@@ -30,6 +30,14 @@ const bookApi = api.injectEndpoints({
       }),
       invalidatesTags: ["readlist"],
     }),
+    markFinished: builder.mutation({
+      query: ({ data }) => ({
+        url: `/user/mark-finished`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["readlist"],
+    }),
   }),
 });
 
@@ -38,4 +46,5 @@ export const {
   useGetUserQuery,
   useRemoveWishlistMutation,
   useAddReadlistMutation,
+  useMarkFinishedMutation,
 } = bookApi;
