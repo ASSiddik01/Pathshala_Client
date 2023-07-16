@@ -4,7 +4,7 @@ const bookApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getUser: builder.query({
       query: () => `/user/profile`,
-      providesTags: ["wishlist"],
+      providesTags: ["wishlist", "readlist"],
     }),
     addWishlist: builder.mutation({
       query: ({ data }) => ({
@@ -24,11 +24,11 @@ const bookApi = api.injectEndpoints({
     }),
     addReadlist: builder.mutation({
       query: ({ data }) => ({
-        url: `/user/add-wishlist`,
+        url: `/user/add-readlist`,
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["wishlist"],
+      invalidatesTags: ["readlist"],
     }),
   }),
 });
