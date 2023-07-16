@@ -10,11 +10,10 @@ export default function Header() {
   const dispatch = useAppDispatch();
 
   const { token } = useAppSelector((state) => state.auth);
-  const { data, isLoading } = useGetUserQuery(undefined);
+  const { data } = useGetUserQuery(undefined);
 
   let userData: { data: { wishlist: [{}] | undefined } } | undefined =
     undefined;
-  let bookLoading: boolean | undefined = undefined;
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
@@ -23,7 +22,6 @@ export default function Header() {
 
   if (token) {
     userData = data;
-    bookLoading = isLoading;
   }
 
   return (
@@ -82,7 +80,12 @@ export default function Header() {
                         <NavLink to="/">Home</NavLink>
                         <NavLink to="/books">All Books</NavLink>
                         {token && (
-                          <NavLink to="/add-new-book">Add New Book </NavLink>
+                          <>
+                            <NavLink to="/add-new-book">Add New Book </NavLink>
+                            <NavLink to="/reading-book-list">
+                              Reading Book list
+                            </NavLink>
+                          </>
                         )}
                       </div>
                     </div>
@@ -90,13 +93,19 @@ export default function Header() {
                 </div>
               </div>
 
-              <div className="action_area md:w-[20%] flex justify-between items-center md:gap-[20px] gap-[5px]">
-                <Link
-                  to="/add-new-book"
-                  className="bg-[#38b5fe] duration-300 flex gap-1 rounded-md py-[8px] px-[12px] font-medium "
-                >
-                  Add <span className="hidden md:block">New</span>
-                </Link>
+              <div
+                className={`action_area ${
+                  token ? "md:w-[20%]" : "md:w-[10%]"
+                } md:w-[20%] flex justify-between items-center md:gap-[20px] gap-[5px]`}
+              >
+                {token && (
+                  <Link
+                    to="/add-new-book"
+                    className="bg-[#38b5fe] duration-300 flex gap-1 text-white rounded-md py-[8px] px-[12px] font-medium "
+                  >
+                    Add <span className="hidden md:block text-white">New</span>
+                  </Link>
+                )}
                 <div className="myaccount relative flex flex-col items-center justify-center text-white duration-300 hover:text-[#38b5fe]">
                   <FiUser size="20" />
                   <p className="text-[13px] hidden md:block">Account</p>

@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
-import { useAddWishlistMutation } from "../redux/features/user/userApi";
+import {
+  useAddReadlistMutation,
+  useAddWishlistMutation,
+} from "../redux/features/user/userApi";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { IError } from "../types/globalTypes";
@@ -9,7 +12,20 @@ export default function BookList() {
   const { books } = useAppSelector((state) => state.book);
   const [addWishlist, { isSuccess, data, isError, error, reset }] =
     useAddWishlistMutation();
+
+  const [
+    addReadlist,
+    {
+      isSuccess: readIsSuccess,
+      data: readData,
+      isError: readisError,
+      error: readError,
+      reset: readReset,
+    },
+  ] = useAddReadlistMutation();
   const navigate = useNavigate();
+
+  console.log(readIsSuccess);
 
   // notification
   useEffect(() => {
@@ -20,7 +36,26 @@ export default function BookList() {
       toast.error((error as IError)?.data.message);
       reset();
     }
-  }, [data, error, isError, isSuccess, reset]);
+    // for add to read list
+    if (readIsSuccess) {
+      toast(`${readData?.message}`);
+      readReset();
+    } else if (readisError) {
+      toast.error((readError as IError)?.data.message);
+      readReset();
+    }
+  }, [
+    data,
+    error,
+    isError,
+    isSuccess,
+    reset,
+    readIsSuccess,
+    readData,
+    readisError,
+    readError,
+    readReset,
+  ]);
   return (
     <section className="">
       {books && books.length > 0 ? (
@@ -28,7 +63,13 @@ export default function BookList() {
           <div className="flex flex-wrap -m-4">
             {books?.map((book) => (
               <div key={book._id} className="p-4 w-full md:w-1/2">
-                <div className="card md:min-h-[300px] md:items-center lg:card-side bg-base-100 box_shadow p-2">
+                <div className="card md:min-h-[300px] md:items-center relative lg:card-side bg-base-100 box_shadow p-2">
+                  <button
+                    onClick={() => addReadlist({ data: { bookId: book._id } })}
+                    className="second_button duration-300 rounded-full py-[4px] px-[6px] font-medium absolute right-2 top-2 text-sm"
+                  >
+                    + Reading
+                  </button>
                   <figure className="md:w-[40%]">
                     <img
                       className="object-contain m-auto h-[200px] w-[200px]  "
