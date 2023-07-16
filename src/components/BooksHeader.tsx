@@ -29,15 +29,18 @@ export default function BooksHeader() {
   return (
     <div className="store_header flex justify-between items-center bg-white p-2 rounded-xl box_shadow relative">
       <div className="flex items-center gap-[15px]">
-        <div id="serach_bar" className={`flex items-center w-[950px]`}>
+        <div
+          id="serach_bar"
+          className={`flex items-center md:w-[950px] w-[250px]`}
+        >
           <form
-            className="flex justify-between gap-5  w-[950px]"
+            className="flex justify-between gap-5  md:w-[950px] w-[250px]"
             onSubmit={(e) => handleSubmit(e)}
             onChange={formik.handleSubmit}
           >
             <input
               type="text"
-              className="text-[25px] border-0 rounded-md p-1 focus:outline-none text-gray-500   w-[950px]"
+              className="text-[25px] border-0 rounded-md p-1 focus:outline-none text-gray-500   md:w-[950px] w-[250px]"
               name="searchTerm"
               id="searchTerm"
               placeholder="Search book"

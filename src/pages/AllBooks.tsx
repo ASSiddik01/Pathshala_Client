@@ -13,8 +13,16 @@ import { useAppSelector } from "../redux/hooks";
 
 export default function AllBooks() {
   const [filter, setfilter] = useState(false);
-  const { search } = useAppSelector((state) => state.book);
-  // const { isSuccess, data, isLoading } = useGetBooksQuery(undefined);
+  const { search, books: newBooks } = useAppSelector((state) => state.book);
+
+  const genres = newBooks
+    ? [...new Set(newBooks.map((book) => book?.genre))]
+    : [];
+
+  const publicationYear = newBooks
+    ? [...new Set(newBooks.map((book) => book?.publishedDate))]
+    : [];
+
   const searchLogic = search ? `searchTerm=${search?.searchTerm}` : undefined;
   const { data, isLoading, isSuccess } = useGetBooksQuery(searchLogic);
   const books = data?.data?.data;
@@ -48,42 +56,61 @@ export default function AllBooks() {
                   onClick={() => setfilter(!filter)}
                   className="filter_title capitalize"
                 >
-                  Filter By
+                  Filter Options
                 </h4>
                 {filter && (
-                  <div className="sub_filter mb-[15px] bg-white p-[20px] rounded-lg ">
-                    <div className="">
-                      <h5 className="sub_filter_title">Filter Name</h5>
-                      <ul className="filte_menu">
-                        <li className="filter_menu_item text-[13px] leading-[28px] capitalize font-medium ">
-                          <div className="flex items-center">
-                            <input
-                              id="link-checkbox"
-                              type="checkbox"
-                              value=""
-                              className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
-                            />
-                            <label htmlFor="link-checkbox" className="ml-2 ">
-                              option
-                            </label>
-                          </div>
-                        </li>
-                        <li className="filter_menu_item text-[13px] leading-[28px] capitalize font-medium ">
-                          <div className="flex items-center">
-                            <input
-                              id="link-checkbox"
-                              type="checkbox"
-                              value=""
-                              className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
-                            />
-                            <label htmlFor="link-checkbox" className="ml-2 ">
-                              option
-                            </label>
-                          </div>
-                        </li>
-                      </ul>
+                  <>
+                    <div className="sub_filter mb-[15px] bg-white p-[20px] rounded-lg ">
+                      <div className="">
+                        <h5 className="sub_filter_title">By Genere Name</h5>
+                        <ul className="filte_menu">
+                          <li className="filter_menu_item text-[13px] leading-[28px] capitalize font-medium ">
+                            {genres?.map((genre, i) => (
+                              <div key={i} className="flex items-center">
+                                <input
+                                  id="link-checkbox"
+                                  type="checkbox"
+                                  value=""
+                                  className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
+                                />
+                                <label
+                                  htmlFor="link-checkbox"
+                                  className="ml-2 "
+                                >
+                                  {genre}
+                                </label>
+                              </div>
+                            ))}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
+                    <div className="sub_filter mb-[15px] bg-white p-[20px] rounded-lg ">
+                      <div className="">
+                        <h5 className="sub_filter_title">By Published Year</h5>
+                        <ul className="filte_menu">
+                          <li className="filter_menu_item text-[13px] leading-[28px] capitalize font-medium ">
+                            {publicationYear?.map((year, i) => (
+                              <div key={i} className="flex items-center">
+                                <input
+                                  id="link-checkbox"
+                                  type="checkbox"
+                                  value=""
+                                  className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
+                                />
+                                <label
+                                  htmlFor="link-checkbox"
+                                  className="ml-2 "
+                                >
+                                  {year.split("-")[0]}
+                                </label>
+                              </div>
+                            ))}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </>
                 )}
               </div>
               <BookList />
