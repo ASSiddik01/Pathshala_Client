@@ -144,7 +144,7 @@ export default function Header() {
                   <div className="wishlist flex flex-col items-center justify-center text-white duration-300 hover:text-[#38b5fe] relative">
                     <FiHeart size="20" />
                     <p className="text-[13px] hidden md:block">Wishlist</p>
-                    <div className="bg-[#38b5fe] badge badge-sm absolute text-[12px] top-[-10px] right-[-10px] md:right-0">
+                    <div className="bg-[#38b5fe] text-white badge badge-sm absolute text-[12px] top-[-10px] right-[-10px] md:right-0">
                       {userData?.data?.wishlist?.length ?? 0}
                     </div>
                   </div>
