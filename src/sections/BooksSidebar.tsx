@@ -65,11 +65,11 @@ export default function BooksSidebar() {
                 <div key={i} className="flex items-center">
                   <input
                     id={`genre-${i}`}
-                    type="radio"
+                    type="checkbox"
                     name="genre"
                     className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
                     // checked={genreState.includes(genre as string)}
-                    // checked={genreState === genre}
+                    checked={genreState === genre}
                     value={genre as string}
                     onChange={(e) => handleGenre(e)}
                   />
@@ -89,10 +89,10 @@ export default function BooksSidebar() {
                 <div key={i} className="flex items-center">
                   <input
                     id={`year-${i}`}
-                    type="radio"
+                    type="checkbox"
                     name="year"
                     value={year}
-                    // checked={yearState.includes(year)}
+                    checked={yearState === year}
                     className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
                     onChange={(e) => handleYear(e)}
                   />
