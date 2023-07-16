@@ -18,11 +18,15 @@ import { useAppSelector } from "../redux/hooks";
 export default function AllBooks() {
   const [filter, setfilter] = useState(false);
   const { search } = useAppSelector((state) => state.book);
-  const { genre: genreState, year: yearState } = useAppSelector(
-    (state) => state.book
-  );
-  const { data: booksData } = useGetBooksQuery(undefined);
-  const allBooks = booksData?.data?.data;
+
+  // handle filter state
+  const {
+    books: allBooks,
+    genre: genreState,
+    year: yearState,
+  } = useAppSelector((state) => state.book);
+  // const { data: booksData } = useGetBooksQuery(undefined);
+  // const allBooks = booksData?.data?.data;
   const dispatch = useAppDispatch();
 
   const genres = allBooks
@@ -42,26 +46,64 @@ export default function AllBooks() {
   ];
 
   const handleGenre = (e: any) => {
-    if (!genreState.includes(e.target.value)) {
-      dispatch(setGenre([...genreState, e.target.value]));
-    }
+    // if (!genreState.includes(e.target.value)) {
+    //   console.log(e.target.value);
+    dispatch(setGenre(e.target.value));
+    // }
   };
 
   const handleYear = (e: any) => {
-    if (!yearState.includes(e.target.value)) {
-      dispatch(setYear([...yearState, e.target.value]));
-    }
+    // if (!yearState.includes(e.target.value)) {
+    dispatch(setYear(e.target.value));
+    // }
   };
   const handleReset = () => {
-    dispatch(setGenre([""]));
-    dispatch(setYear([""]));
+    dispatch(setGenre(""));
+    dispatch(setYear(""));
   };
 
+  let searchLogic = "";
+
+  if (genreState) {
+    searchLogic += `genre=${genreState}`;
+  }
+
+  if (yearState) {
+    searchLogic += `${searchLogic ? "&" : ""}publishedDate=${yearState}`;
+  }
+
+  if (search && search.searchTerm) {
+    searchLogic += `${searchLogic ? "&" : ""}searchTerm=${search.searchTerm}`;
+  }
+
   // Load and set book
-  const searchLogic = search ? `searchTerm=${search?.searchTerm}` : undefined;
+
   const { data, isLoading, isSuccess } = useGetBooksQuery(searchLogic);
   const books = data?.data?.data;
   const meta = data?.data?.meta;
+
+  // const sliceGenres = genreState.slice(1);
+  // const sliceYears = yearState.slice(1);
+
+  // let newbook = [];
+  // const newbook =
+  //   books?.filter((book: { genre: string }, i: string | number) =>
+  //     sliceGenres[i as number]?.includes(book.genre)
+  //   ) || [];
+
+  // let slinewbook = [];
+  // for (let i = 0; i < books?.length; i++) {
+  //   if (sliceYears[i]?.includes(books[i].publishedDate.split("-")[0])) {
+  //     slinewbook.push(books[i]);
+  //   }
+  // }
+  // console.log(slinewbook);
+
+  // const result = books?.filter((item) => item.genre.);
+
+  // console.log(books);
+  // console.log(result);
+  // console.log(sliceGenres, sliceYears);
 
   useEffect(() => {
     if (isSuccess) {
@@ -110,9 +152,11 @@ export default function AllBooks() {
                               <div key={i} className="flex items-center">
                                 <input
                                   id={`genre-${i}`}
-                                  type="checkbox"
+                                  type="radio"
+                                  name="genre"
                                   className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
-                                  checked={genreState.includes(genre as string)}
+                                  // checked={genreState.includes(genre as string)}
+                                  // checked={genreState === genre}
                                   value={genre as string}
                                   onChange={(e) => handleGenre(e)}
                                 />
@@ -134,9 +178,10 @@ export default function AllBooks() {
                               <div key={i} className="flex items-center">
                                 <input
                                   id={`year-${i}`}
-                                  type="checkbox"
+                                  type="radio"
+                                  name="year"
                                   value={year}
-                                  checked={yearState.includes(year)}
+                                  // checked={yearState.includes(year)}
                                   className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
                                   onChange={(e) => handleYear(e)}
                                 />

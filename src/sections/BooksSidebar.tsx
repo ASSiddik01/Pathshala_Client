@@ -3,11 +3,13 @@ import { setGenre, setYear } from "../redux/features/book/bookSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 export default function BooksSidebar() {
-  const { genre: genreState, year: yearState } = useAppSelector(
-    (state) => state.book
-  );
-  const { data } = useGetBooksQuery(undefined);
-  const books = data?.data?.data;
+  const {
+    books,
+    genre: genreState,
+    year: yearState,
+  } = useAppSelector((state) => state.book);
+  // const { data } = useGetBooksQuery(undefined);
+  // const books = data?.data?.data;
   const dispatch = useAppDispatch();
 
   const genres = books
@@ -27,19 +29,20 @@ export default function BooksSidebar() {
   ];
 
   const handleGenre = (e: any) => {
-    if (!genreState.includes(e.target.value)) {
-      dispatch(setGenre([...genreState, e.target.value]));
-    }
+    // if (!genreState.includes(e.target.value)) {
+    //   console.log(e.target.value);
+    dispatch(setGenre(e.target.value));
+    // }
   };
 
   const handleYear = (e: any) => {
-    if (!yearState.includes(e.target.value)) {
-      dispatch(setYear([...yearState, e.target.value]));
-    }
+    // if (!yearState.includes(e.target.value)) {
+    dispatch(setYear(e.target.value));
+    // }
   };
   const handleReset = () => {
-    dispatch(setGenre([""]));
-    dispatch(setYear([""]));
+    dispatch(setGenre(""));
+    dispatch(setYear(""));
   };
 
   return (
@@ -62,9 +65,11 @@ export default function BooksSidebar() {
                 <div key={i} className="flex items-center">
                   <input
                     id={`genre-${i}`}
-                    type="checkbox"
+                    type="radio"
+                    name="genre"
                     className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
-                    checked={genreState.includes(genre as string)}
+                    // checked={genreState.includes(genre as string)}
+                    // checked={genreState === genre}
                     value={genre as string}
                     onChange={(e) => handleGenre(e)}
                   />
@@ -84,9 +89,10 @@ export default function BooksSidebar() {
                 <div key={i} className="flex items-center">
                   <input
                     id={`year-${i}`}
-                    type="checkbox"
+                    type="radio"
+                    name="year"
                     value={year}
-                    checked={yearState.includes(year)}
+                    // checked={yearState.includes(year)}
                     className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
                     onChange={(e) => handleYear(e)}
                   />

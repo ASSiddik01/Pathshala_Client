@@ -22,16 +22,16 @@ interface IBook {
   search: {
     searchTerm: string | null;
   } | null;
-  genre: [string];
-  year: [string];
+  genre: string;
+  year: string;
 }
 
 const initialState: IBook = {
   books: null,
   meta: null,
   search: null,
-  genre: [""],
-  year: [""],
+  genre: "",
+  year: "",
 };
 
 const bookSlice = createSlice({
