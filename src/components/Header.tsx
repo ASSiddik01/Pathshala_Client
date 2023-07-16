@@ -108,7 +108,7 @@ export default function Header() {
               <div
                 className={`action_area ${
                   token ? "md:w-[20%]" : "md:w-[10%]"
-                } md:w-[20%] flex justify-between items-center md:gap-[20px] gap-[5px]`}
+                } flex justify-between items-center md:gap-[20px] gap-[5px]`}
               >
                 {token && (
                   <Link
