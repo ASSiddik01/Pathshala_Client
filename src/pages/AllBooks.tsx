@@ -2,7 +2,6 @@ import BreadCrumb from "../components/BreadCrumb";
 import Head from "../components/Head";
 import BooksSidebar from "../sections/BooksSidebar";
 import BooksHeader from "../components/BooksHeader";
-import BooksFooter from "../components/BooksFooter";
 import BookList from "../sections/BookList";
 import { useEffect, useState } from "react";
 import { useGetBooksQuery } from "../redux/features/book/bookApi";
@@ -25,8 +24,6 @@ export default function AllBooks() {
     genre: genreState,
     year: yearState,
   } = useAppSelector((state) => state.book);
-  // const { data: booksData } = useGetBooksQuery(undefined);
-  // const allBooks = booksData?.data?.data;
   const dispatch = useAppDispatch();
 
   const genres = allBooks
@@ -46,16 +43,11 @@ export default function AllBooks() {
   ];
 
   const handleGenre = (e: any) => {
-    // if (!genreState.includes(e.target.value)) {
-    //   console.log(e.target.value);
     dispatch(setGenre(e.target.value));
-    // }
   };
 
   const handleYear = (e: any) => {
-    // if (!yearState.includes(e.target.value)) {
     dispatch(setYear(e.target.value));
-    // }
   };
   const handleReset = () => {
     dispatch(setGenre(""));
@@ -81,29 +73,6 @@ export default function AllBooks() {
   const { data, isLoading, isSuccess } = useGetBooksQuery(searchLogic);
   const books = data?.data?.data;
   const meta = data?.data?.meta;
-
-  // const sliceGenres = genreState.slice(1);
-  // const sliceYears = yearState.slice(1);
-
-  // let newbook = [];
-  // const newbook =
-  //   books?.filter((book: { genre: string }, i: string | number) =>
-  //     sliceGenres[i as number]?.includes(book.genre)
-  //   ) || [];
-
-  // let slinewbook = [];
-  // for (let i = 0; i < books?.length; i++) {
-  //   if (sliceYears[i]?.includes(books[i].publishedDate.split("-")[0])) {
-  //     slinewbook.push(books[i]);
-  //   }
-  // }
-  // console.log(slinewbook);
-
-  // const result = books?.filter((item) => item.genre.);
-
-  // console.log(books);
-  // console.log(result);
-  // console.log(sliceGenres, sliceYears);
 
   useEffect(() => {
     if (isSuccess) {
@@ -155,7 +124,6 @@ export default function AllBooks() {
                                   type="radio"
                                   name="genre"
                                   className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
-                                  // checked={genreState.includes(genre as string)}
                                   checked={genreState === genre}
                                   value={genre as string}
                                   onChange={(e) => handleGenre(e)}
@@ -198,7 +166,7 @@ export default function AllBooks() {
                 )}
               </div>
               <BookList />
-              <BooksFooter />
+              {/* <BooksFooter /> */}
             </div>
           </div>
         </div>

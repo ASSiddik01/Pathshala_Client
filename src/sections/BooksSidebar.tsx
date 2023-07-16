@@ -1,4 +1,3 @@
-import { useGetBooksQuery } from "../redux/features/book/bookApi";
 import { setGenre, setYear } from "../redux/features/book/bookSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
@@ -8,8 +7,6 @@ export default function BooksSidebar() {
     genre: genreState,
     year: yearState,
   } = useAppSelector((state) => state.book);
-  // const { data } = useGetBooksQuery(undefined);
-  // const books = data?.data?.data;
   const dispatch = useAppDispatch();
 
   const genres = books
@@ -29,16 +26,11 @@ export default function BooksSidebar() {
   ];
 
   const handleGenre = (e: any) => {
-    // if (!genreState.includes(e.target.value)) {
-    //   console.log(e.target.value);
     dispatch(setGenre(e.target.value));
-    // }
   };
 
   const handleYear = (e: any) => {
-    // if (!yearState.includes(e.target.value)) {
     dispatch(setYear(e.target.value));
-    // }
   };
   const handleReset = () => {
     dispatch(setGenre(""));
@@ -68,7 +60,6 @@ export default function BooksSidebar() {
                     type="checkbox"
                     name="genre"
                     className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
-                    // checked={genreState.includes(genre as string)}
                     checked={genreState === genre}
                     value={genre as string}
                     onChange={(e) => handleGenre(e)}

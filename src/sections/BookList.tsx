@@ -25,8 +25,6 @@ export default function BookList() {
   ] = useAddReadlistMutation();
   const navigate = useNavigate();
 
-  console.log(readIsSuccess);
-
   // notification
   useEffect(() => {
     if (isSuccess) {

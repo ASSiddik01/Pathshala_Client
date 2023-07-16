@@ -47,7 +47,7 @@ export default function Header() {
                     </label>
                     <ul
                       tabIndex={0}
-                      className="menu menu-compact top-[65px] rounded-lg dropdown-content p-2 shadow bg-base-100 w-52"
+                      className="menu menu-compact z-[9999] top-[65px] rounded-lg dropdown-content p-2 shadow bg-base-100 w-52"
                     >
                       <li>
                         <Link to="/">Home</Link>
@@ -55,6 +55,18 @@ export default function Header() {
                       <li className="block md:hidden">
                         <Link to="/books">All Books</Link>
                       </li>
+                      {token && (
+                        <>
+                          <li className="block md:hidden">
+                            <Link to="/add-new-book">Add New Book</Link>
+                          </li>
+                          <li className="block md:hidden">
+                            <Link to="/reading-book-list">
+                              Reading Book list
+                            </Link>
+                          </li>
+                        </>
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -109,7 +121,7 @@ export default function Header() {
                 <div className="myaccount relative flex flex-col items-center justify-center text-white duration-300 hover:text-[#38b5fe]">
                   <FiUser size="20" />
                   <p className="text-[13px] hidden md:block">Account</p>
-                  <div className="user_button absolute  z-50 top-[56px] w-[120px] py-[5px] px-[10px] rounded-md ">
+                  <div className="user_button absolute  z-[999] right-[-40px] md:top-[63px] top-[50px] w-[120px] py-[5px] px-[10px] rounded-md ">
                     <ul className="text-center">
                       {!token ? (
                         <>

@@ -17,7 +17,7 @@ export default function BooksHeader() {
 
     validationSchema: formSchema,
 
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values) => {
       dispatch(searchState(values));
     },
   });

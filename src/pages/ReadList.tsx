@@ -13,8 +13,7 @@ export default function ReadList() {
   const books = data?.data?.readlist;
   const [markFinished, { isSuccess, data: markData, isError, error, reset }] =
     useMarkFinishedMutation();
-  console.log(books);
-  console.log(isSuccess, isError, markData, error);
+
   useEffect(() => {
     if (isSuccess) {
       toast(`${markData?.message}`);
