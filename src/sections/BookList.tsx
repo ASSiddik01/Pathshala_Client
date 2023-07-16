@@ -61,7 +61,7 @@ export default function BookList() {
           <div className="flex flex-wrap -m-4">
             {books?.map((book) => (
               <div key={book._id} className="p-4 w-full md:w-1/2">
-                <div className="card md:min-h-[300px] md:items-center relative lg:card-side bg-base-100 box_shadow p-2">
+                <div className="card md:min-h-[300px] md:items-center relative lg:card-side bg-white box_shadow p-2">
                   <button
                     onClick={() => addReadlist({ data: { bookId: book._id } })}
                     className="second_button duration-300 rounded-full py-[4px] px-[6px] font-medium absolute right-2 top-2 text-sm"
@@ -80,15 +80,21 @@ export default function BookList() {
                     <ul className="info_list">
                       <li className="info">
                         {" "}
-                        <span className="font-bold">Genre: </span>
+                        <span className="font-bold text-[#131921]">
+                          Genre:{" "}
+                        </span>
                         {book?.genre}
                       </li>
                       <li className="info">
-                        <span className="font-bold">Author: </span>
+                        <span className="font-bold text-[#131921]">
+                          Author:{" "}
+                        </span>
                         {book?.author}
                       </li>
                       <li className="info">
-                        <span className="font-bold">Published At: </span>
+                        <span className="font-bold text-[#131921]">
+                          Published At:{" "}
+                        </span>
                         {book?.publishedDate}
                       </li>
                     </ul>

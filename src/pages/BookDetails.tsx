@@ -137,7 +137,7 @@ export default function BookDetails() {
         <div className="body_wrapper ">
           <div className="layout p-[20px]">
             <div className="p-4 w-full">
-              <div className="bg-base-100 box_shadow p-2">
+              <div className="bg-white box_shadow p-2">
                 <div className="card md:min-h-[300px] md:items-start lg:card-side">
                   <figure className="md:w-[40%]">
                     <img
@@ -150,19 +150,27 @@ export default function BookDetails() {
                     <h2 className="card-title capitalize ">{book?.title}</h2>
                     <ul className="info_list">
                       <li className="info">
-                        <span className="font-bold">Genre: </span>
+                        <span className="font-bold text-[#131921]">
+                          Genre:{" "}
+                        </span>
                         {book?.genre}
                       </li>
                       <li className="info">
-                        <span className="font-bold">Author: </span>
+                        <span className="font-bold text-[#131921]">
+                          Author:{" "}
+                        </span>
                         {book?.author}
                       </li>
                       <li className="info">
-                        <span className="font-bold">Published At: </span>
+                        <span className="font-bold text-[#131921]">
+                          Published At:{" "}
+                        </span>
                         {book?.publishedDate}
                       </li>
                       <li className="info">
-                        <span className="font-bold">About Book: </span>
+                        <span className="font-bold text-[#131921]">
+                          About Book:{" "}
+                        </span>
                         {book?.desc}
                       </li>
                     </ul>

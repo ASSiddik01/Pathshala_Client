@@ -67,6 +67,11 @@ textarea::placeholder {
   font-size: 14px;
 }
 
+input,
+textarea {
+  color: var(--color_232f3e) !important;
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -106,6 +111,14 @@ input[type="number"]::-webkit-outer-spin-button {
 .second_button:hover {
   background-color: var(--color_232f3e) !important;
   color: #fff !important;
+}
+
+.card {
+  background-color: #fff !important;
+}
+
+.info_list .info {
+  color: var(--color_131921) !important;
 }
 
 /* Header */

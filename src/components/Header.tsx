@@ -47,7 +47,7 @@ export default function Header() {
                     </label>
                     <ul
                       tabIndex={0}
-                      className="menu menu-compact z-[9999] top-[65px] rounded-lg dropdown-content p-2 shadow bg-base-100 w-52"
+                      className="menu menu-compact z-[9999] top-[65px] rounded-lg dropdown-content p-2 shadow bg-white w-52"
                     >
                       <li>
                         <Link to="/">Home</Link>
